@@ -82,7 +82,6 @@ class Client:
 # Daemonize all the things!
 class Daemon(Daemon):
   def run(self):
-    # Or simply merge your code with MyDaemon.
     client = Client() 
     client.run()
 
