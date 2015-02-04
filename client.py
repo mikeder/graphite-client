@@ -11,11 +11,14 @@ import platform
 import requests
 import subprocess
 from socket import socket
+import psutil
 
-CLIENT_NAME = 'tools'
+CLIENT_NAME = 'cherrym'
 
 class Data:
   # Functions for gathering data:
+
+
   # get climate data from arduino/dht sensor
   def get_climate(self):
     r = requests.get('http://192.168.1.20')
