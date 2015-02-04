@@ -17,8 +17,14 @@ CLIENT_NAME = 'cherrym'
 
 class Data:
   # Functions for gathering data:
-
-
+  # get conns to :port
+  def get_conns(self, port):
+    conns = psutil.net_connections
+    active = 0
+    for conn in conns:
+      if conn.laddr[1] == port and status == 'ESTABLISHED':
+        active += 1
+    return active
   # get climate data from arduino/dht sensor
   def get_climate(self):
     r = requests.get('http://192.168.1.20')
@@ -59,15 +65,12 @@ class Client:
       lines = []
       #We're gonna report all three loadavg values
       loadavg = data.get_loadavg()
-      # Get new values from DHT sensor
-      #tC, tF, h = data.get_climate()
       lines.append("%s.loadavg_1min %s %d" % (CLIENT_NAME,loadavg[0],now))
       lines.append("%s.loadavg_5min %s %d" % (CLIENT_NAME,loadavg[1],now))
       lines.append("%s.loadavg_15min %s %d" % (CLIENT_NAME,loadavg[2],now))
-      # Uncomment for DHT values
-      #lines.append("dht.tempC %d %d" % (tC, now))
-      #lines.append("dht.tempF %d %d" % (tF, now))
-      #lines.append("dht.hum %d %d" % (h, now))
+      #Check for connections to port 8080
+      listeners = data.get_conns(8080)
+      lines.append("%s.listeners %d %d" % (CLIENT_NAME,listeners,now))
       message = '\n'.join(lines) + '\n' #all lines must end in a newline
       print "sending message\n"
       print '-' * 80
