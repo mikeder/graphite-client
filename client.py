@@ -12,6 +12,8 @@ import requests
 import subprocess
 from socket import socket
 
+CLIENT_NAME = 'tools'
+
 class Data:
   # Functions for gathering data:
   # get climate data from arduino/dht sensor
@@ -56,9 +58,9 @@ class Client:
       loadavg = data.get_loadavg()
       # Get new values from DHT sensor
       #tC, tF, h = data.get_climate()
-      lines.append("tools.loadavg_1min %s %d" % (loadavg[0],now))
-      lines.append("tools.loadavg_5min %s %d" % (loadavg[1],now))
-      lines.append("tools.loadavg_15min %s %d" % (loadavg[2],now))
+      lines.append("%s.loadavg_1min %s %d" % (CLIENT_NAME,loadavg[0],now))
+      lines.append("%s.loadavg_5min %s %d" % (CLIENT_NAME,loadavg[1],now))
+      lines.append("%s.loadavg_15min %s %d" % (CLIENT_NAME,loadavg[2],now))
       # Uncomment for DHT values
       #lines.append("dht.tempC %d %d" % (tC, now))
       #lines.append("dht.tempF %d %d" % (tF, now))
