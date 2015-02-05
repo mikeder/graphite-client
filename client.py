@@ -19,10 +19,12 @@ class Data:
   # Functions for gathering data:
   # get conns to :port
   def get_conns(self, port):
-    conns = psutil.net_connections
+    conns = psutil.net_connections()
     active = 0
     for conn in conns:
-      if conn.laddr[1] == port and status == 'ESTABLISHED':
+      if conn.laddr[1] == port and conn.status == 'ESTABLISHED':
+        active += 1
+      elif conn.laddr[1] == port and conn.status == 'TIME_WAIT':
         active += 1
     return active
   # get climate data from arduino/dht sensor
